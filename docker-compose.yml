@@ -1,0 +1,28 @@
+# NOTES:
+# Run from the "server" directory:
+#   $ docker-compose up -d
+#     > -d causes the process to execute in the background
+#     > The $PWD is important for initialization, if the
+#       command is not run from the "server" directory, the
+#       path will be wrong and the databases will not be created
+
+version: "3"
+
+volumes:
+  esdata:
+    driver: local
+
+networks:
+  elastic:
+    driver: bridge
+
+services:
+  postgres:
+    image: postgres:10.6
+    container_name: filter_pipe_test
+    environment:
+      - POSTGRES_PASSWORD=test
+    ports:
+      - 5432:5432
+    volumes:
+      - $PWD/docker-scripts:/docker-entrypoint-initdb.d
